@@ -1,0 +1,34 @@
+{
+  "name": "com.acmepy.logger-js",
+  "version": "0.0.1",
+  "description": "Logger js vainilla",
+  "main": "dist/logger.cjs",
+  "module":"dist/logger.esm.js",
+  "unpkg": "dist/logger.umd.js",
+  "scripts": {
+    "test": "jest",
+    "build": "microbundle"
+  },
+  "dependencies": {
+    "dayjs":"^1.11.13"
+  },
+  "devDependencies": {
+    "jest":"^30.0.4",
+    "microbundle": "^0.15.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acmepy/logger-js.git"
+  },
+  "keywords": [
+    "logger",
+    "js",
+    "vainilla"
+  ],
+  "author": "Hugo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/acmepy/logger-js/issues"
+  },
+  "homepage": "https://github.com/acmepy/logger-js#readme"
+}
