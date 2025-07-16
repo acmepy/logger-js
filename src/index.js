@@ -3,9 +3,9 @@ import dayjs from 'dayjs'
 
 const path = 'lib/logger'
 
-const LEVELS ={TRACE:1, DEBUG:2, INFO:3, WARN:4, ERROR:5, OFF:99}//ALL < |TRACE < DEBUG < INFO < WARN < ERROR| < FATAL < MARK < OFF
+export const LEVELS ={TRACE:1, DEBUG:2, INFO:3, WARN:4, ERROR:5, OFF:99}//ALL < |TRACE < DEBUG < INFO < WARN < ERROR| < FATAL < MARK < OFF
 
-class Logger{
+export class Logger{
   break  =[]
   level  =0
   console={}
@@ -146,12 +146,7 @@ class Logger{
   }
 }
 
-const logger = new Logger()
-export default {
-  LEVELS,
-  Logger,
-  logger
-}
+export const logger = new Logger()
 
 //export const logger = new Logger()
 //export default logger
