@@ -146,8 +146,11 @@ class Logger{
   }
 }
 
-const logger = new Logger()
-export default logger
+export function createLogger({file, logger='my logger', displayConsole=false, level=LEVELS.TRACE}){
+  const log = new Logger()
+  log.config({file, logger, displayConsole, level})
+}
+export const logger = false
 
 //export const logger = new Logger()
 //export default logger
