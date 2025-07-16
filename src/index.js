@@ -146,5 +146,8 @@ export class Logger{
   }
 }
 
-export const logger = new Logger()
+const logger = new Logger()
 export default logger
+
+//export const logger = new Logger()
+//export default logger

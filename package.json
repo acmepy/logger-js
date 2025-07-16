@@ -2,13 +2,19 @@
   "name": "com.acmepy.logger-js",
   "version": "0.0.3",
   "description": "Logger js vainilla",
+  "type": "module",
+  "source": "src/index.js",
   "main": "dist/logger.cjs",
   "module": "dist/logger.esm.js",
   "unpkg": "dist/logger.umd.js",
+  "exports": {
+    "require": "./dist/logger.cjs",
+    "import": "./dist/logger.esm.js"
+  },
   "scripts": {
     "test": "jest",
-    "prepare": "microbundle",
-    "build": "microbundle",
+    "prepare": "npm run build",
+    "build": "microbundle build --name logger",
     "release": "npm run build && git add . && git commit -m 'preparando-release' && npm version patch && git push && git push --tags"
   },
   "dependencies": {
