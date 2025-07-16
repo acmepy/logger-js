@@ -10,18 +10,18 @@ class Logger{
   level  =0
   console={}
   file   =false
-  logger =false
+  name =false
 
-  config({file, logger='my logger', displayConsole=false, level=LEVELS.TRACE}){
+  config({file, name='my logger', displayConsole=false, level=LEVELS.TRACE}){
     this.file   = file
-    this.logger = logger
+    this.name = name
     this.console= {
       display : displayConsole,
       log     : console.log,
       error   : console.error
     }
     this.level  = level
-	  logger = this
+	  name = this
   }
 
   addBreak(break_){
@@ -29,8 +29,8 @@ class Logger{
     this.info(path, 'addBreak', this.break)    
   }
 
-  getLogger(logger){
-    this.logger = logger
+  getName(name){
+    this.name = name
   }
 
   name(){
@@ -70,7 +70,7 @@ class Logger{
     const level = rest.shift()
     const path = rest.shift()
     if((this.break.length==0&&this.level<=LEVELS[level])||this.break.includes(path)||['ERROR', 'FATAL'].includes(level)){
-	    const logger = this.logger.indexOf(']')>-1?this.logger:'['+this.logger+']'
+	    const logger = this.name.indexOf(']')>-1?this.name:'['+this.name+']'
       //let tmp = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+logger+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
       //let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', logger, '['+path+']', rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')]
       let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', logger, '['+path+']', ...rest]
@@ -146,9 +146,10 @@ class Logger{
   }
 }
 
-export function createLogger({file, logger='my logger', displayConsole=false, level=LEVELS.TRACE}){
+export function createLogger({file, name='my logger', displayConsole=false, level=LEVELS.TRACE}){
   //logger = new Logger()
-  logger.config({file, logger, displayConsole, level})
+  console.log('createLogger', )
+  logger.config({file, name, displayConsole, level})
 }
 export const logger = new Logger()
 
