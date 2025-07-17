@@ -10,7 +10,7 @@ class Logger{
   level  =0
   console={}
   file   =false
-  name =false
+  name   =false
 
   config({file, name='my logger', displayConsole=false, level=LEVELS.TRACE}){
     this.file   = file
@@ -21,7 +21,7 @@ class Logger{
       error   : console.error
     }
     this.level  = level
-	  name = this
+	  //name = this
   }
 
   addBreak(break_){
@@ -70,10 +70,10 @@ class Logger{
     const level = rest.shift()
     const path = rest.shift()
     if((this.break.length==0&&this.level<=LEVELS[level])||this.break.includes(path)||['ERROR', 'FATAL'].includes(level)){
-	    const logger = this.name.indexOf(']')>-1?this.name:'['+this.name+']'
-      //let tmp = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+logger+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
-      //let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', logger, '['+path+']', rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')]
-      let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', logger, '['+path+']', ...rest]
+	    const name = this.name.indexOf(']')>-1?this.name:'['+this.name+']'
+      //let tmp = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+name+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
+      //let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', name, '['+path+']', rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')]
+      let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', name, '['+path+']', ...rest]
       if(this.console.display||['ERROR', 'FATAL'].includes(level)){
         if(['ERROR', 'FATAL'].includes(level)){
           this.console.error(...tmp)
