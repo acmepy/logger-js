@@ -11,8 +11,9 @@ class Logger{
   console={}
   file   =false
   name   =false
+  debug  =false
 
-  config({file, name='my logger', displayConsole=false, level=LEVELS.TRACE}){
+  config({file, name='my logger', displayConsole=false, level=LEVELS.TRACE, debug=false}){
     this.file   = file
     this.name = name
     this.console= {
@@ -21,6 +22,7 @@ class Logger{
       error   : console.error
     }
     this.level  = level
+    this.debug  = debug
 	  //name = this
   }
 
@@ -136,12 +138,15 @@ class Logger{
         rest[r].cert = rest[r].cert.substring(0, 10)+'...'+rest[r].cert.substring(rest[r].cert.length-10)
       }else if(rest[r].password){
         rest[r].password = rest[r].password.replace(rest[r].password, '*')
-      }else if(rest[r].pass){
+      }else if(rest[r].pass&&!this.debug){
         rest[r].pass = rest[r].pass.replace(rest[r].pass, '*')
-      }else if(rest[r].clave){
+      }else if(rest[r].clave&&!this.debug){
         rest[r].clave = rest[r].clave.replace(rest[r].clave, '*')
+      }else if(rest[r].token&&!this.debug){
+        rest[r].token = rest[r].token.replace(rest[r].token, '*')
       }
     }
+console.log(rest)
     return rest
   }
 }
