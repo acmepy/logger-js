@@ -15,7 +15,8 @@
     "test": "jest",
     "prepare": "npm run build",
     "build": "microbundle build --name logger",
-    "release": "npm run build && git add . && git commit -m 'preparando-release' && npm version patch && git push && git push --tags"
+    "prerelease": "npm run build && git add . && git commit -m 'preparando-release'",
+    "release": "npm version patch && git push && git push --tags"
   },
   "dependencies": {
     "dayjs": "^1.11.13"
