@@ -1,6 +1,6 @@
 {
   "name": "com.acmepy.logger-js",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Logger js vainilla",
   "type": "module",
   "source": "src/index.js",
@@ -30,7 +30,7 @@
     "url": "git+https://github.com/acmepy/logger-js.git"
   },
   "files": [
-    "dist" 
+    "dist"
   ],
   "keywords": [
     "logger",
