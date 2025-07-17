@@ -29,13 +29,13 @@ class Logger{
     this.info(path, 'addBreak', this.break)    
   }
 
-  getName(name){
+  setName(name){
     this.name = name
   }
 
-  name(){
+  /*name(){
     return this.file.substring(this.file.indexOf('data/')+5)
-  }
+  }*/
 
   trace(...rest){
     rest.unshift('TRACE')
