@@ -145,6 +145,7 @@ class Logger{
       }else if(rest[r].token&&!this.debug){
         rest[r].token = rest[r].token.replace(rest[r].token, '*')
       }
+      console.log('-->', rest[r])
       if(typeof rest[r] == 'object'){
         rest[r] = JSON.parse(JSON.stringify(rest[r])) 
       }
