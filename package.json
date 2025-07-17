@@ -15,7 +15,7 @@
     "test": "jest",
     "prepare": "npm run build",
     "build": "microbundle build --name logger",
-    "prerelease": "npm run build && git add . && git commit -m 'preparando-release'",
+    "prereleasex": "npm run build && git add . && git commit -m 'preparando-release' NO FUNCIONA SI NO HAY CAMBIOS",
     "release": "npm version patch && git push && git push --tags"
   },
   "dependencies": {
