@@ -147,7 +147,7 @@ class Logger{
       }
       //console.log('-->', typeof rest[r], typeof rest[r]=='object',rest[r])
       if(typeof rest[r]=='object'){
-        rest[r] = JSON.parse(JSON.stringify(rest[r])) 
+        rest[r] = JSON.stringify(rest[r])
       }else if (Array.isArray(rest[r])){
         rest[r] = rest[r].join(',')
       }
