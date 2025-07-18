@@ -130,9 +130,7 @@ class Logger{
 
   filterLogger(rest){
     for(let r=0;r<rest.length;r++){
-      console.log(1)
       if(rest[r]?.constructor?.name=='Logger'){
-        console.log(2)
         rest.splice(r, 1)
       }else if(rest[r].logger){
         delete rest[r].logger
@@ -147,8 +145,6 @@ class Logger{
       }else if(rest[r].token&&!this.hideSecrets){
         rest[r].token = rest[r].token.replace(rest[r].token, '*')
       }
-      console.log(3)
-      //console.log('-->', typeof rest[r], typeof rest[r]=='object',rest[r])
       if(typeof rest[r]=='object'){
         rest[r] = JSON.stringify(rest[r])
       }else if (Array.isArray(rest[r])){
