@@ -11,9 +11,9 @@ class Logger{
   console={}
   file   =false
   name   =false
-  debug  =false
+  hideSecrets  =false
 
-  config({file, name='my logger', displayConsole=false, level=LEVELS.TRACE, debug=false}){
+  config({file, name='my logger', displayConsole=false, level=LEVELS.TRACE, hideSecrets=true}){
     this.file   = file
     this.name = name
     this.console= {
@@ -22,7 +22,7 @@ class Logger{
       error   : console.error
     }
     this.level  = level
-    this.debug  = debug
+    this.hideSecrets  = hideSecrets
 	  //name = this
   }
 
@@ -138,11 +138,11 @@ class Logger{
         rest[r].cert = rest[r].cert.substring(0, 10)+'...'+rest[r].cert.substring(rest[r].cert.length-10)
       }else if(rest[r].password){
         rest[r].password = rest[r].password.replace(rest[r].password, '*')
-      }else if(rest[r].pass&&!this.debug){
+      }else if(rest[r].pass&&!this.hideSecrets){
         rest[r].pass = rest[r].pass.replace(rest[r].pass, '*')
-      }else if(rest[r].clave&&!this.debug){
+      }else if(rest[r].clave&&!this.hideSecrets){
         rest[r].clave = rest[r].clave.replace(rest[r].clave, '*')
-      }else if(rest[r].token&&!this.debug){
+      }else if(rest[r].token&&!this.hideSecrets){
         rest[r].token = rest[r].token.replace(rest[r].token, '*')
       }
       //console.log('-->', typeof rest[r], typeof rest[r]=='object',rest[r])
