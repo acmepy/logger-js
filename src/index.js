@@ -131,7 +131,7 @@ class Logger{
   filterLogger(rest){
     for(let r=0;r<rest.length;r++){
       console.log(1)
-      if(rest[r]?.constructor.name=='Logger'){
+      if(rest[r]?.constructor?.name=='Logger'){
         console.log(2)
         rest.splice(r, 1)
       }else if(rest[r].logger){
