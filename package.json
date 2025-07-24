@@ -22,7 +22,7 @@
     "dayjs": "^1.11.13"
   },
   "peerDependencies": {
-    "dayjs": ">1.11.13 <2.0.0",
+    "dayjs": ">1.11.0 <2.0.0",
     "microbundle": ">0.15.0 <1.0.0"
   },
   "devDependencies": {
