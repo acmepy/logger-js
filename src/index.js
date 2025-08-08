@@ -65,6 +65,7 @@ class Logger{
   }
 
   log(rest){
+console.log('0')
     //if (!this.file){throw new Error('Logger aun no se ha configurado')}
     //let rest = JSON.parse(JSON.stringify(rest1))
     rest = this.filterLogger(rest)
