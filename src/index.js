@@ -78,12 +78,17 @@ class Logger{
       let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', name, '['+path+']', ...rest]
       if(this.console.display||['ERROR', 'FATAL'].includes(level)){
         if(['ERROR', 'FATAL'].includes(level)){
+console.log('1')
           this.console.error(...tmp)
+console.log('2')
         }if(['WARN'].includes(level)){
+console.log('6')
           this.console.warn(...tmp)
         }else{
+console.log('4')
           this.console.log(...tmp)
         }
+console.log('5')
       }
       if(this.file)  {
         //tmp  = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+logger+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
