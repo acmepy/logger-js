@@ -73,23 +73,24 @@ console.log('0')
     const level = rest.shift()
     const path = rest.shift()
     if((this.break.length==0&&this.level<=LEVELS[level])||this.break.includes(path)||['ERROR', 'FATAL'].includes(level)){
+console.log('01')
 	    const name = this.name.indexOf(']')>-1?this.name:'['+this.name+']'
       //let tmp = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+name+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
       //let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', name, '['+path+']', rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')]
       let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', name, '['+path+']', ...rest]
       if(this.console.display||['ERROR', 'FATAL'].includes(level)){
+console.log('02')
         if(['ERROR', 'FATAL'].includes(level)){
 console.log('1')
           this.console.error(...tmp)
-console.log('2')
         }if(['WARN'].includes(level)){
-console.log('6')
+console.log('2')
           this.console.warn(...tmp)
         }else{
-console.log('4')
+console.log('3')
           this.console.log(...tmp)
         }
-console.log('5')
+console.log('4')
       }
       if(this.file)  {
         //tmp  = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+logger+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
