@@ -70,9 +70,10 @@ class Logger{
 //ok
     rest = this.filterLogger(rest)
     rest = this.nodemailer(rest)
+//
     const level = rest.shift()
     const path = rest.shift()
-console.log(rest)
+//fail
     if((this.break.length==0&&this.level<=LEVELS[level])||this.break.includes(path)||['ERROR', 'FATAL'].includes(level)){
 	    const name = this.name.indexOf(']')>-1?this.name:'['+this.name+']'
       //let tmp = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+name+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
@@ -147,8 +148,9 @@ console.log(rest)
         rest[r].clave = rest[r].clave.replace(rest[r].clave, '*')
       }else if(rest[r].token&&!this.hideSecrets){
         rest[r].token = rest[r].token.replace(rest[r].token, '*')
-      }
-      if(typeof rest[r]=='object'){
+      }else if(rest[r] instanceof Error){
+        rest[r] = JSON.stringify({message:rest[r].message, stack:rest[r].stack})
+      }else if(typeof rest[r]=='object'){
         rest[r] = JSON.stringify(rest[r])
       }else if (Array.isArray(rest[r])){
         rest[r] = rest[r].join(',')
