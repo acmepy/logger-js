@@ -78,6 +78,7 @@ class Logger{
       let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', name, '['+path+']', ...rest]
       if(this.console.display||['ERROR', 'FATAL'].includes(level)){
         if(['ERROR', 'FATAL'].includes(level)){
+console.log(tmp)
           this.console.error(...tmp)
         }else if(['WARN'].includes(level)){
           this.console.warn(...tmp)
