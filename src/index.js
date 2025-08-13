@@ -67,11 +67,12 @@ class Logger{
   log(rest){
     //if (!this.file){throw new Error('Logger aun no se ha configurado')}
     //let rest = JSON.parse(JSON.stringify(rest1))
-console.log(rest)
+//ok
     rest = this.filterLogger(rest)
     rest = this.nodemailer(rest)
     const level = rest.shift()
     const path = rest.shift()
+console.log(rest)
     if((this.break.length==0&&this.level<=LEVELS[level])||this.break.includes(path)||['ERROR', 'FATAL'].includes(level)){
 	    const name = this.name.indexOf(']')>-1?this.name:'['+this.name+']'
       //let tmp = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+name+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
