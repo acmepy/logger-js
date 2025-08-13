@@ -67,6 +67,7 @@ class Logger{
   log(rest){
     //if (!this.file){throw new Error('Logger aun no se ha configurado')}
     //let rest = JSON.parse(JSON.stringify(rest1))
+console.log(rest)
     rest = this.filterLogger(rest)
     rest = this.nodemailer(rest)
     const level = rest.shift()
@@ -78,7 +79,7 @@ class Logger{
       let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', name, '['+path+']', ...rest]
       if(this.console.display||['ERROR', 'FATAL'].includes(level)){
         if(['ERROR', 'FATAL'].includes(level)){
-console.log(tmp)
+//console.log(tmp)
           this.console.error(...tmp)
         }else if(['WARN'].includes(level)){
           this.console.warn(...tmp)
