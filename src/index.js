@@ -67,13 +67,10 @@ class Logger{
   log(rest){
     //if (!this.file){throw new Error('Logger aun no se ha configurado')}
     //let rest = JSON.parse(JSON.stringify(rest1))
-//ok
     rest = this.filterLogger(rest)
-    rest = this.nodemailer(rest)
-//
+    //rest = this.nodemailer(rest)
     const level = rest.shift()
     const path = rest.shift()
-//fail
     if((this.break.length==0&&this.level<=LEVELS[level])||this.break.includes(path)||['ERROR', 'FATAL'].includes(level)){
 	    const name = this.name.indexOf(']')>-1?this.name:'['+this.name+']'
       //let tmp = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+name+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
@@ -81,7 +78,6 @@ class Logger{
       let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', name, '['+path+']', ...rest]
       if(this.console.display||['ERROR', 'FATAL'].includes(level)){
         if(['ERROR', 'FATAL'].includes(level)){
-//console.log(tmp)
           this.console.error(...tmp)
         }else if(['WARN'].includes(level)){
           this.console.warn(...tmp)
@@ -108,7 +104,7 @@ class Logger{
     return LEVELS
   }
 
-  nodemailer(rest){
+  /*nodemailer(rest){
     if(typeof rest[1]=='object'){
       let tmp = []
       if(rest[2].indexOf('%s')>=0){
@@ -130,7 +126,7 @@ class Logger{
   formatLog(message, values){
     const tmp = message.replace(/%[sd]/g, () => values.shift());
     return tmp
-  }
+  }*/
 
   filterLogger(rest){
     for(let r=0;r<rest.length;r++){
@@ -149,7 +145,7 @@ class Logger{
       }else if(rest[r].token&&!this.hideSecrets){
         rest[r].token = rest[r].token.replace(rest[r].token, '*')
       }else if(rest[r] instanceof Error){
-        rest[r] = JSON.stringify({message:rest[r].message, stack:rest[r].stack})
+        rest[r] = rest[r].message+`\nstack:`+rest[r].stack
       }else if(typeof rest[r]=='object'){
         rest[r] = JSON.stringify(rest[r])
       }else if (Array.isArray(rest[r])){
