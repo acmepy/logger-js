@@ -34,8 +34,7 @@
     "url": "git+https://github.com/acmepy/logger-js.git"
   },
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "keywords": [
     "logger",
