@@ -88,7 +88,7 @@ class Logger{
       if(this.file)  {
         //tmp  = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+logger+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
         tmp.shift()
-        tmp = ['['+dayjs().format('HH:mm:ss')+']', ...tmp]
+        tmp = ['['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']', ...tmp]
         this.writeFile(this.file, tmp)
       }
     }
