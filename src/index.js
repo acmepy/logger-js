@@ -73,8 +73,8 @@ class Logger{
     const path = rest.shift()
     if((this.break.length==0&&this.level<=LEVELS[level])||this.break.includes(path)||['ERROR', 'FATAL'].includes(level)){
 	    const name = this.name.indexOf(']')>-1?this.name:'['+this.name+']'
-      //let tmp = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+name+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
-      //let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', name, '['+path+']', rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')]
+      ////let tmp = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+name+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
+      ////let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', name, '['+path+']', rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')]
       let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', name, '['+path+']', ...rest]
       if(this.console.display||['ERROR', 'FATAL'].includes(level)){
         if(['ERROR', 'FATAL'].includes(level)){
