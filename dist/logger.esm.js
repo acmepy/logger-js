@@ -1,2 +1,149 @@
-import e from"fs";import i from"dayjs";function t(e){var i=function(e){if("object"!=typeof e||!e)return e;var i=e[Symbol.toPrimitive];if(void 0!==i){var t=i.call(e,"string");if("object"!=typeof t)return t;throw new TypeError("@@toPrimitive must return a primitive value.")}return String(e)}(e);return"symbol"==typeof i?i:i+""}var r={TRACE:1,DEBUG:2,INFO:3,WARN:4,ERROR:5,OFF:99};function s(e){var i=e.name,t=e.displayConsole,s=e.level;o.config({file:e.file,name:void 0===i?"my logger":i,displayConsole:void 0!==t&&t,level:void 0===s?r.TRACE:s})}var o=new(/*#__PURE__*/function(){function s(){this.break=[],this.level=0,this.console={},this.file=!1,this.name=!1,this.hideSecrets=!1}var o,n,l=s.prototype;return l.config=function(e){var i=e.name,t=void 0===i?"my logger":i,s=e.displayConsole,o=void 0!==s&&s,n=e.level,l=void 0===n?r.TRACE:n,a=e.hideSecrets,c=void 0===a||a;this.file=e.file,this.name=t,this.console={display:o,log:console.log,error:console.error},this.level=l,this.hideSecrets=c},l.addBreak=function(e){this.break.push(e),this.info("lib/logger","addBreak",this.break)},l.setName=function(e){this.name=e},l.trace=function(){var e=[].slice.call(arguments);e.unshift("TRACE"),this.log(e)},l.debug=function(){var e=[].slice.call(arguments);e.unshift("DEBUG"),this.log(e)},l.info=function(){var e=[].slice.call(arguments);e.unshift("INFO"),this.log(e)},l.warn=function(){var e=[].slice.call(arguments);e.unshift("WARN"),this.log(e)},l.error=function(){var e=[].slice.call(arguments);e.unshift("ERROR"),this.log(e)},l.log=function(e){var t=(e=this.filterLogger(e)).shift(),s=e.shift();if(0==this.break.length&&this.level<=r[t]||this.break.includes(s)||["ERROR","FATAL"].includes(t)){var o,n=this.name.indexOf("]")>-1?this.name:"["+this.name+"]",l=["["+i().format("HH:mm:ss")+"]","["+t+"]",n,"["+s+"]"].concat(e);if(this.console.display||["ERROR","FATAL"].includes(t))if(["ERROR","FATAL"].includes(t))(o=this.console).error.apply(o,l);else if(["WARN"].includes(t)){var a;(a=this.console).warn.apply(a,l)}else{var c;(c=this.console).log.apply(c,l)}this.file&&(l.shift(),l=["["+i().format("YYYY-MM-DD HH:mm:ss")+"]"].concat(l),this.writeFile(this.file,l))}},l.writeFile=function(i,t){var r=i.split("/").slice(0,-1).join("/");e.existsSync(r)||e.mkdirSync(r,{recursive:!0}),e.appendFile(i,t+"\n",function(e){e&&console.error("logger writeFile",e)})},l.filterLogger=function(e){for(var i=0;i<e.length;i++){var t;"Logger"==(null==(t=e[i])||null==(t=t.constructor)?void 0:t.name)?e.splice(i,1):e[i].logger?delete e[i].logger:e[i].cert?e[i].cert=e[i].cert.substring(0,10)+"..."+e[i].cert.substring(e[i].cert.length-10):e[i].password?e[i].password=e[i].password.replace(e[i].password,"*"):e[i].pass&&!this.hideSecrets?e[i].pass=e[i].pass.replace(e[i].pass,"*"):e[i].clave&&!this.hideSecrets?e[i].clave=e[i].clave.replace(e[i].clave,"*"):e[i].token&&!this.hideSecrets?e[i].token=e[i].token.replace(e[i].token,"*"):e[i]instanceof Error?e[i]=e[i].message+"\nstack:"+e[i].stack:"object"==typeof e[i]?e[i]=JSON.stringify(e[i]):Array.isArray(e[i])&&(e[i]=e[i].join(","))}return e},o=s,(n=[{key:"levels",get:function(){return r}}])&&function(e,i){for(var r=0;r<i.length;r++){var s=i[r];s.enumerable=s.enumerable||!1,s.configurable=!0,"value"in s&&(s.writable=!0),Object.defineProperty(e,t(s.key),s)}}(o,n),Object.defineProperty(o,"prototype",{writable:!1}),o}());export{s as createLogger,o as logger};
+// src/index.js
+import fs from "fs";
+import dayjs from "dayjs";
+var path = "lib/logger";
+var LEVELS = { TRACE: 1, DEBUG: 2, INFO: 3, WARN: 4, ERROR: 5, OFF: 99 };
+var Logger = class {
+  break = [];
+  level = 0;
+  console = {};
+  file = false;
+  name = false;
+  hideSecrets = false;
+  config({ file, name = "my logger", displayConsole = false, level = LEVELS.TRACE, hideSecrets = true }) {
+    this.file = file;
+    this.name = name;
+    this.console = {
+      display: displayConsole,
+      log: console.log,
+      error: console.error
+    };
+    this.level = level;
+    this.hideSecrets = hideSecrets;
+  }
+  addBreak(break_) {
+    this.break.push(break_);
+    this.info(path, "addBreak", this.break);
+  }
+  setName(name) {
+    this.name = name;
+  }
+  /*name(){
+    return this.file.substring(this.file.indexOf('data/')+5)
+  }*/
+  trace(...rest) {
+    rest.unshift("TRACE");
+    this.log(rest);
+  }
+  debug(...rest) {
+    rest.unshift("DEBUG");
+    this.log(rest);
+  }
+  info(...rest) {
+    rest.unshift("INFO");
+    this.log(rest);
+  }
+  warn(...rest) {
+    rest.unshift("WARN");
+    this.log(rest);
+  }
+  error(...rest) {
+    rest.unshift("ERROR");
+    this.log(rest);
+  }
+  log(rest) {
+    rest = this.filterLogger(rest);
+    const level = rest.shift();
+    const path2 = rest.shift();
+    if (this.break.length == 0 && this.level <= LEVELS[level] || this.break.includes(path2) || ["ERROR", "FATAL"].includes(level)) {
+      const name = this.name.indexOf("]") > -1 ? this.name : "[" + this.name + "]";
+      let tmp = ["[" + dayjs().format("HH:mm:ss") + "]", "[" + level + "]", name, "[" + path2 + "]", ...rest];
+      if (this.console.display || ["ERROR", "FATAL"].includes(level)) {
+        if (["ERROR", "FATAL"].includes(level)) {
+          this.console.error(...tmp);
+        } else if (["WARN"].includes(level)) {
+          this.console.warn(...tmp);
+        } else {
+          this.console.log(...tmp);
+        }
+      }
+      if (this.file) {
+        tmp.shift();
+        tmp = ["[" + dayjs().format("YYYY-MM-DD HH:mm:ss") + "]", ...tmp];
+        this.writeFile(this.file, tmp);
+      }
+    }
+  }
+  writeFile(fn, data) {
+    const dir = fn.split("/").slice(0, -1).join("/");
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.appendFile(fn, data + "\n", (err) => {
+      if (err) {
+        console.error("logger writeFile", err);
+      }
+    });
+  }
+  static get levels() {
+    return LEVELS;
+  }
+  /*nodemailer(rest){
+      if(typeof rest[1]=='object'){
+        let tmp = []
+        if(rest[2].indexOf('%s')>=0){
+          for(let x=3;x<rest.length;x++){
+            tmp.push(rest[x])
+          }
+          rest[2] = this.formatLog(rest[2], tmp)
+        }
+        tmp = [rest[0], 'nodemailer']
+        if(rest[1]?.sid){
+          tmp.push('['+rest[1]?.sid+']')
+        }
+        tmp.push(rest[2])
+        rest = tmp
+      }
+      return rest
+    }
+  
+    formatLog(message, values){
+      const tmp = message.replace(/%[sd]/g, () => values.shift());
+      return tmp
+    }*/
+  filterLogger(rest) {
+    var _a, _b;
+    for (let r = 0; r < rest.length; r++) {
+      if (((_b = (_a = rest[r]) == null ? void 0 : _a.constructor) == null ? void 0 : _b.name) == "Logger") {
+        rest.splice(r, 1);
+      } else if (rest[r].logger) {
+        delete rest[r].logger;
+      } else if (rest[r].cert) {
+        rest[r].cert = rest[r].cert.substring(0, 10) + "..." + rest[r].cert.substring(rest[r].cert.length - 10);
+      } else if (rest[r].password) {
+        rest[r].password = rest[r].password.replace(rest[r].password, "*");
+      } else if (rest[r].pass && !this.hideSecrets) {
+        rest[r].pass = rest[r].pass.replace(rest[r].pass, "*");
+      } else if (rest[r].clave && !this.hideSecrets) {
+        rest[r].clave = rest[r].clave.replace(rest[r].clave, "*");
+      } else if (rest[r].token && !this.hideSecrets) {
+        rest[r].token = rest[r].token.replace(rest[r].token, "*");
+      } else if (rest[r] instanceof Error) {
+        rest[r] = rest[r].message + `
+stack:` + rest[r].stack;
+      } else if (typeof rest[r] == "object") {
+        rest[r] = JSON.stringify(rest[r]);
+      } else if (Array.isArray(rest[r])) {
+        rest[r] = rest[r].join(",");
+      }
+    }
+    return rest;
+  }
+};
+function createLogger({ file, name = "my logger", displayConsole = false, level = LEVELS.TRACE }) {
+  logger.config({ file, name, displayConsole, level });
+}
+var logger = new Logger();
+export {
+  createLogger,
+  logger
+};
 //# sourceMappingURL=logger.esm.js.map

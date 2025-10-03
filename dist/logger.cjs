@@ -1,2 +1,184 @@
-var e=require("fs"),i=require("dayjs");function t(e){return e&&"object"==typeof e&&"default"in e?e:{default:e}}var r=/*#__PURE__*/t(e),s=/*#__PURE__*/t(i);function o(e){var i=function(e){if("object"!=typeof e||!e)return e;var i=e[Symbol.toPrimitive];if(void 0!==i){var t=i.call(e,"string");if("object"!=typeof t)return t;throw new TypeError("@@toPrimitive must return a primitive value.")}return String(e)}(e);return"symbol"==typeof i?i:i+""}var l={TRACE:1,DEBUG:2,INFO:3,WARN:4,ERROR:5,OFF:99},n=new(/*#__PURE__*/function(){function e(){this.break=[],this.level=0,this.console={},this.file=!1,this.name=!1,this.hideSecrets=!1}var i,t,n=e.prototype;return n.config=function(e){var i=e.name,t=void 0===i?"my logger":i,r=e.displayConsole,s=void 0!==r&&r,o=e.level,n=void 0===o?l.TRACE:o,a=e.hideSecrets,c=void 0===a||a;this.file=e.file,this.name=t,this.console={display:s,log:console.log,error:console.error},this.level=n,this.hideSecrets=c},n.addBreak=function(e){this.break.push(e),this.info("lib/logger","addBreak",this.break)},n.setName=function(e){this.name=e},n.trace=function(){var e=[].slice.call(arguments);e.unshift("TRACE"),this.log(e)},n.debug=function(){var e=[].slice.call(arguments);e.unshift("DEBUG"),this.log(e)},n.info=function(){var e=[].slice.call(arguments);e.unshift("INFO"),this.log(e)},n.warn=function(){var e=[].slice.call(arguments);e.unshift("WARN"),this.log(e)},n.error=function(){var e=[].slice.call(arguments);e.unshift("ERROR"),this.log(e)},n.log=function(e){var i=(e=this.filterLogger(e)).shift(),t=e.shift();if(0==this.break.length&&this.level<=l[i]||this.break.includes(t)||["ERROR","FATAL"].includes(i)){var r,o=this.name.indexOf("]")>-1?this.name:"["+this.name+"]",n=["["+s.default().format("HH:mm:ss")+"]","["+i+"]",o,"["+t+"]"].concat(e);if(this.console.display||["ERROR","FATAL"].includes(i))if(["ERROR","FATAL"].includes(i))(r=this.console).error.apply(r,n);else if(["WARN"].includes(i)){var a;(a=this.console).warn.apply(a,n)}else{var c;(c=this.console).log.apply(c,n)}this.file&&(n.shift(),n=["["+s.default().format("YYYY-MM-DD HH:mm:ss")+"]"].concat(n),this.writeFile(this.file,n))}},n.writeFile=function(e,i){var t=e.split("/").slice(0,-1).join("/");r.default.existsSync(t)||r.default.mkdirSync(t,{recursive:!0}),r.default.appendFile(e,i+"\n",function(e){e&&console.error("logger writeFile",e)})},n.filterLogger=function(e){for(var i=0;i<e.length;i++){var t;"Logger"==(null==(t=e[i])||null==(t=t.constructor)?void 0:t.name)?e.splice(i,1):e[i].logger?delete e[i].logger:e[i].cert?e[i].cert=e[i].cert.substring(0,10)+"..."+e[i].cert.substring(e[i].cert.length-10):e[i].password?e[i].password=e[i].password.replace(e[i].password,"*"):e[i].pass&&!this.hideSecrets?e[i].pass=e[i].pass.replace(e[i].pass,"*"):e[i].clave&&!this.hideSecrets?e[i].clave=e[i].clave.replace(e[i].clave,"*"):e[i].token&&!this.hideSecrets?e[i].token=e[i].token.replace(e[i].token,"*"):e[i]instanceof Error?e[i]=e[i].message+"\nstack:"+e[i].stack:"object"==typeof e[i]?e[i]=JSON.stringify(e[i]):Array.isArray(e[i])&&(e[i]=e[i].join(","))}return e},i=e,(t=[{key:"levels",get:function(){return l}}])&&function(e,i){for(var t=0;t<i.length;t++){var r=i[t];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,o(r.key),r)}}(i,t),Object.defineProperty(i,"prototype",{writable:!1}),i}());exports.createLogger=function(e){var i=e.name,t=e.displayConsole,r=e.level;n.config({file:e.file,name:void 0===i?"my logger":i,displayConsole:void 0!==t&&t,level:void 0===r?l.TRACE:r})},exports.logger=n;
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+// src/index.js
+var index_exports = {};
+__export(index_exports, {
+  createLogger: () => createLogger,
+  logger: () => logger
+});
+module.exports = __toCommonJS(index_exports);
+var import_fs = __toESM(require("fs"), 1);
+var import_dayjs = __toESM(require("dayjs"), 1);
+var path = "lib/logger";
+var LEVELS = { TRACE: 1, DEBUG: 2, INFO: 3, WARN: 4, ERROR: 5, OFF: 99 };
+var Logger = class {
+  break = [];
+  level = 0;
+  console = {};
+  file = false;
+  name = false;
+  hideSecrets = false;
+  config({ file, name = "my logger", displayConsole = false, level = LEVELS.TRACE, hideSecrets = true }) {
+    this.file = file;
+    this.name = name;
+    this.console = {
+      display: displayConsole,
+      log: console.log,
+      error: console.error
+    };
+    this.level = level;
+    this.hideSecrets = hideSecrets;
+  }
+  addBreak(break_) {
+    this.break.push(break_);
+    this.info(path, "addBreak", this.break);
+  }
+  setName(name) {
+    this.name = name;
+  }
+  /*name(){
+    return this.file.substring(this.file.indexOf('data/')+5)
+  }*/
+  trace(...rest) {
+    rest.unshift("TRACE");
+    this.log(rest);
+  }
+  debug(...rest) {
+    rest.unshift("DEBUG");
+    this.log(rest);
+  }
+  info(...rest) {
+    rest.unshift("INFO");
+    this.log(rest);
+  }
+  warn(...rest) {
+    rest.unshift("WARN");
+    this.log(rest);
+  }
+  error(...rest) {
+    rest.unshift("ERROR");
+    this.log(rest);
+  }
+  log(rest) {
+    rest = this.filterLogger(rest);
+    const level = rest.shift();
+    const path2 = rest.shift();
+    if (this.break.length == 0 && this.level <= LEVELS[level] || this.break.includes(path2) || ["ERROR", "FATAL"].includes(level)) {
+      const name = this.name.indexOf("]") > -1 ? this.name : "[" + this.name + "]";
+      let tmp = ["[" + (0, import_dayjs.default)().format("HH:mm:ss") + "]", "[" + level + "]", name, "[" + path2 + "]", ...rest];
+      if (this.console.display || ["ERROR", "FATAL"].includes(level)) {
+        if (["ERROR", "FATAL"].includes(level)) {
+          this.console.error(...tmp);
+        } else if (["WARN"].includes(level)) {
+          this.console.warn(...tmp);
+        } else {
+          this.console.log(...tmp);
+        }
+      }
+      if (this.file) {
+        tmp.shift();
+        tmp = ["[" + (0, import_dayjs.default)().format("YYYY-MM-DD HH:mm:ss") + "]", ...tmp];
+        this.writeFile(this.file, tmp);
+      }
+    }
+  }
+  writeFile(fn, data) {
+    const dir = fn.split("/").slice(0, -1).join("/");
+    if (!import_fs.default.existsSync(dir)) import_fs.default.mkdirSync(dir, { recursive: true });
+    import_fs.default.appendFile(fn, data + "\n", (err) => {
+      if (err) {
+        console.error("logger writeFile", err);
+      }
+    });
+  }
+  static get levels() {
+    return LEVELS;
+  }
+  /*nodemailer(rest){
+      if(typeof rest[1]=='object'){
+        let tmp = []
+        if(rest[2].indexOf('%s')>=0){
+          for(let x=3;x<rest.length;x++){
+            tmp.push(rest[x])
+          }
+          rest[2] = this.formatLog(rest[2], tmp)
+        }
+        tmp = [rest[0], 'nodemailer']
+        if(rest[1]?.sid){
+          tmp.push('['+rest[1]?.sid+']')
+        }
+        tmp.push(rest[2])
+        rest = tmp
+      }
+      return rest
+    }
+  
+    formatLog(message, values){
+      const tmp = message.replace(/%[sd]/g, () => values.shift());
+      return tmp
+    }*/
+  filterLogger(rest) {
+    var _a, _b;
+    for (let r = 0; r < rest.length; r++) {
+      if (((_b = (_a = rest[r]) == null ? void 0 : _a.constructor) == null ? void 0 : _b.name) == "Logger") {
+        rest.splice(r, 1);
+      } else if (rest[r].logger) {
+        delete rest[r].logger;
+      } else if (rest[r].cert) {
+        rest[r].cert = rest[r].cert.substring(0, 10) + "..." + rest[r].cert.substring(rest[r].cert.length - 10);
+      } else if (rest[r].password) {
+        rest[r].password = rest[r].password.replace(rest[r].password, "*");
+      } else if (rest[r].pass && !this.hideSecrets) {
+        rest[r].pass = rest[r].pass.replace(rest[r].pass, "*");
+      } else if (rest[r].clave && !this.hideSecrets) {
+        rest[r].clave = rest[r].clave.replace(rest[r].clave, "*");
+      } else if (rest[r].token && !this.hideSecrets) {
+        rest[r].token = rest[r].token.replace(rest[r].token, "*");
+      } else if (rest[r] instanceof Error) {
+        rest[r] = rest[r].message + `
+stack:` + rest[r].stack;
+      } else if (typeof rest[r] == "object") {
+        rest[r] = JSON.stringify(rest[r]);
+      } else if (Array.isArray(rest[r])) {
+        rest[r] = rest[r].join(",");
+      }
+    }
+    return rest;
+  }
+};
+function createLogger({ file, name = "my logger", displayConsole = false, level = LEVELS.TRACE }) {
+  logger.config({ file, name, displayConsole, level });
+}
+var logger = new Logger();
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  createLogger,
+  logger
+});
 //# sourceMappingURL=logger.cjs.map
