@@ -65,8 +65,6 @@ class Logger{
   }
 
   log(rest){
-    //if (!this.file){throw new Error('Logger aun no se ha configurado')}
-    //let rest = JSON.parse(JSON.stringify(rest1))
     rest = this.filterLogger(rest)
     //rest = this.nodemailer(rest)
     const level = rest.shift()
