@@ -1,6 +1,6 @@
 {
   "name": "com.acmepy.logger-js",
-  "version": "0.0.55",
+  "version": "0.0.56",
   "description": "Logger js vainilla",
   "type": "module",
   "source": "src/index.js",
