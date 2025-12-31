@@ -13,7 +13,7 @@ class Logger {
   name = false
   hideSecrets = false
 
-  config({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE, hideSecrets = true }) {
+  config({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE, hideSecrets = true, breaks = [] }) {
     this.file = file
     this.name = name
     this.console = {
@@ -23,6 +23,7 @@ class Logger {
     }
     this.level = level
     this.hideSecrets = hideSecrets
+    this.break = breaks
     //name = this
   }
 
@@ -154,7 +155,7 @@ class Logger {
   }
 }
 
-export function createLogger({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE }) {
-  logger.config({ file, name, displayConsole, level })
+export function createLogger({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE, breaks = [] }) {
+  logger.config({ file, name, displayConsole, level, breaks })
 }
 export const logger = new Logger()
