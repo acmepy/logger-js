@@ -29,6 +29,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.js
 var index_exports = {};
 __export(index_exports, {
+  LEVELS: () => LEVELS,
   createLogger: () => createLogger,
   logger: () => logger
 });
@@ -178,6 +179,7 @@ function createLogger({ file, name = "my logger", displayConsole = false, level 
 var logger = new Logger();
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  LEVELS,
   createLogger,
   logger
 });

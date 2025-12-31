@@ -3,35 +3,35 @@ import dayjs from 'dayjs'
 
 const path = 'lib/logger'
 
-const LEVELS ={TRACE:1, DEBUG:2, INFO:3, WARN:4, ERROR:5, OFF:99}//ALL < |TRACE < DEBUG < INFO < WARN < ERROR| < FATAL < MARK < OFF
+export const LEVELS = { TRACE: 1, DEBUG: 2, INFO: 3, WARN: 4, ERROR: 5, OFF: 99 }//ALL < |TRACE < DEBUG < INFO < WARN < ERROR| < FATAL < MARK < OFF
 
-class Logger{
-  break  =[]
-  level  =0
-  console={}
-  file   =false
-  name   =false
-  hideSecrets  =false
+class Logger {
+  break = []
+  level = 0
+  console = {}
+  file = false
+  name = false
+  hideSecrets = false
 
-  config({file, name='my logger', displayConsole=false, level=LEVELS.TRACE, hideSecrets=true}){
-    this.file   = file
+  config({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE, hideSecrets = true }) {
+    this.file = file
     this.name = name
-    this.console= {
-      display : displayConsole,
-      log     : console.log,
-      error   : console.error
+    this.console = {
+      display: displayConsole,
+      log: console.log,
+      error: console.error
     }
-    this.level  = level
-    this.hideSecrets  = hideSecrets
-	  //name = this
+    this.level = level
+    this.hideSecrets = hideSecrets
+    //name = this
   }
 
-  addBreak(break_){
+  addBreak(break_) {
     this.break.push(break_)
-    this.info(path, 'addBreak', this.break)    
+    this.info(path, 'addBreak', this.break)
   }
 
-  setName(name){
+  setName(name) {
     this.name = name
   }
 
@@ -39,66 +39,66 @@ class Logger{
     return this.file.substring(this.file.indexOf('data/')+5)
   }*/
 
-  trace(...rest){
+  trace(...rest) {
     rest.unshift('TRACE')
     this.log(rest)
   }
 
-  debug(...rest){
+  debug(...rest) {
     rest.unshift('DEBUG')
     this.log(rest)
   }
 
-  info(...rest){
+  info(...rest) {
     rest.unshift('INFO')
     this.log(rest)
   }
 
-  warn(...rest){
+  warn(...rest) {
     rest.unshift('WARN')
     this.log(rest)
   }
 
-  error(...rest){
+  error(...rest) {
     rest.unshift('ERROR')
     this.log(rest)
   }
 
-  log(rest){
+  log(rest) {
     rest = this.filterLogger(rest)
     //rest = this.nodemailer(rest)
     const level = rest.shift()
     const path = rest.shift()
-    if((this.break.length==0&&this.level<=LEVELS[level])||this.break.includes(path)||['ERROR', 'FATAL'].includes(level)){
-	    const name = this.name.indexOf(']')>-1?this.name:'['+this.name+']'
+    if ((this.break.length == 0 && this.level <= LEVELS[level]) || this.break.includes(path) || ['ERROR', 'FATAL'].includes(level)) {
+      const name = this.name.indexOf(']') > -1 ? this.name : '[' + this.name + ']'
       ////let tmp = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+name+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
       ////let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', name, '['+path+']', rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')]
-      let tmp = ['['+dayjs().format('HH:mm:ss')+']','['+level+']', name, '['+path+']', ...rest]
-      if(this.console.display||['ERROR', 'FATAL'].includes(level)){
-        if(['ERROR', 'FATAL'].includes(level)){
+      let tmp = ['[' + dayjs().format('HH:mm:ss') + ']', '[' + level + ']', name, '[' + path + ']', ...rest]
+      if (this.console.display || ['ERROR', 'FATAL'].includes(level)) {
+        if (['ERROR', 'FATAL'].includes(level)) {
           this.console.error(...tmp)
-        }else if(['WARN'].includes(level)){
+        } else if (['WARN'].includes(level)) {
           this.console.warn(...tmp)
-        }else{
+        } else {
           this.console.log(...tmp)
         }
       }
-      if(this.file)  {
+      if (this.file) {
         //tmp  = '['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']['+level+']'+logger+'['+path+'] - '+rest.map(r=>{return (typeof r=='string')?r:JSON.stringify(r)}).join(', ').replaceAll(`\\"`, `"`).replaceAll(`\\\\`, '')
         tmp.shift()
-        tmp = ['['+dayjs().format('YYYY-MM-DD HH:mm:ss')+']', ...tmp]
+        tmp = ['[' + dayjs().format('YYYY-MM-DD HH:mm:ss') + ']', ...tmp]
         this.writeFile(this.file, tmp)
       }
     }
   }
 
-  writeFile(fn, data){
+  writeFile(fn, data) {
     const dir = fn.split("/").slice(0, -1).join('/')
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, {recursive: true})
-    fs.appendFile(fn, data+'\n', (err)=>{if (err){console.error('logger writeFile', err)}})
-	}
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+    fs.appendFile(fn, data + '\n', (err) => { if (err) { console.error('logger writeFile', err) } })
+  }
 
-  static get levels(){
+  static get levels() {
     return LEVELS
   }
 
@@ -126,27 +126,27 @@ class Logger{
     return tmp
   }*/
 
-  filterLogger(rest){
-    for(let r=0;r<rest.length;r++){
-      if(rest[r]?.constructor?.name=='Logger'){
+  filterLogger(rest) {
+    for (let r = 0; r < rest.length; r++) {
+      if (rest[r]?.constructor?.name == 'Logger') {
         rest.splice(r, 1)
-      }else if(rest[r].logger){
+      } else if (rest[r].logger) {
         delete rest[r].logger
-      }else if(rest[r].cert){
-        rest[r].cert = rest[r].cert.substring(0, 10)+'...'+rest[r].cert.substring(rest[r].cert.length-10)
-      }else if(rest[r].password){
+      } else if (rest[r].cert) {
+        rest[r].cert = rest[r].cert.substring(0, 10) + '...' + rest[r].cert.substring(rest[r].cert.length - 10)
+      } else if (rest[r].password) {
         rest[r].password = rest[r].password.replace(rest[r].password, '*')
-      }else if(rest[r].pass&&!this.hideSecrets){
+      } else if (rest[r].pass && !this.hideSecrets) {
         rest[r].pass = rest[r].pass.replace(rest[r].pass, '*')
-      }else if(rest[r].clave&&!this.hideSecrets){
+      } else if (rest[r].clave && !this.hideSecrets) {
         rest[r].clave = rest[r].clave.replace(rest[r].clave, '*')
-      }else if(rest[r].token&&!this.hideSecrets){
+      } else if (rest[r].token && !this.hideSecrets) {
         rest[r].token = rest[r].token.replace(rest[r].token, '*')
-      }else if(rest[r] instanceof Error){
-        rest[r] = rest[r].message+`\nstack:`+rest[r].stack
-      }else if(typeof rest[r]=='object'){
+      } else if (rest[r] instanceof Error) {
+        rest[r] = rest[r].message + `\nstack:` + rest[r].stack
+      } else if (typeof rest[r] == 'object') {
         rest[r] = JSON.stringify(rest[r])
-      }else if (Array.isArray(rest[r])){
+      } else if (Array.isArray(rest[r])) {
         rest[r] = rest[r].join(',')
       }
     }
@@ -154,7 +154,7 @@ class Logger{
   }
 }
 
-export function createLogger({file, name='my logger', displayConsole=false, level=LEVELS.TRACE}){
-  logger.config({file, name, displayConsole, level})
+export function createLogger({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE }) {
+  logger.config({ file, name, displayConsole, level })
 }
 export const logger = new Logger()

@@ -143,6 +143,7 @@ function createLogger({ file, name = "my logger", displayConsole = false, level 
 }
 var logger = new Logger();
 export {
+  LEVELS,
   createLogger,
   logger
 };

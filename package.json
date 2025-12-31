@@ -15,8 +15,8 @@
     "test": "jest",
     "preparexx": "npm run build",
     "build": "node build.js",
-    "build-prod": "NODE_ENV=production node build.js",
-    "prerelease": "npm run build && git add . && git commit -m 'preparando-release' && git push",
+    "build-prod": "set NODE_ENV=production node build.js",
+    "prerelease": "npm run build-prod && git add . && git commit -m 'preparando-release' && git push",
     "release": "npm version patch && git push && git push --tags"
   },
   "scriptsxx": {
@@ -26,8 +26,8 @@
     "dayjs": ">1.11.0 <2.0.0"
   },
   "devDependencies": {
-    "esbuild": "^0.25.10",
-    "jest": "^30.0.4"
+    "esbuild": "^0.27.2",
+    "jest": "^29.7.0"
   },
   "devDependenciesxx": {
     "microbundle": "^0.15.1"
