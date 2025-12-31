@@ -37,7 +37,6 @@ __export(index_exports, {
 module.exports = __toCommonJS(index_exports);
 var import_fs = __toESM(require("fs"), 1);
 var import_dayjs = __toESM(require("dayjs"), 1);
-var import_isoWeek = __toESM(require("dayjs/plugin/isoWeek.js"), 1);
 var path = "lib/logger";
 var LEVELS = { TRACE: 1, DEBUG: 2, INFO: 3, WARN: 4, ERROR: 5, OFF: 99 };
 var ROTATE = { HOURLY: "hourly", DAILY: "daily", WEEKLY: "weekly", MONTHLY: "monthly" };
@@ -125,19 +124,15 @@ var Logger = class {
     if (this.rotate) {
       let date;
       switch (this.rotate) {
+        case ROTATE.MONTHLY:
+          date = (0, import_dayjs.default)().format("YYYY-MM");
+          break;
         case ROTATE.HOURLY:
           date = (0, import_dayjs.default)().format("YYYY-MM-DD HH");
           break;
         case ROTATE.DAILY:
+        default:
           date = (0, import_dayjs.default)().format("YYYY-MM-DD");
-          break;
-        case ROTATE.WEEKLY:
-          import_dayjs.default.extend(import_isoWeek.default);
-          const week = (0, import_dayjs.default)().isoWeekYear();
-          date = (0, import_dayjs.default)().format("YYYY-") + week;
-          break;
-        case ROTATE.MONTHLY:
-          date = (0, import_dayjs.default)().format("YYYY-MM");
           break;
       }
       fn = fn.replace(".log", `-${date}.log`);
