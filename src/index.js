@@ -175,7 +175,7 @@ class Logger {
   }
 }
 
-export function createLogger({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE, breaks = [] }) {
-  logger.config({ file, name, displayConsole, level, breaks })
+export function createLogger({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE, rotate = 'daily', breaks = [] }) {
+  logger.config({ file, name, displayConsole, level, rotate, breaks })
 }
 export const logger = new Logger()
