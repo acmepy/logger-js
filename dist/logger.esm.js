@@ -85,7 +85,7 @@ var Logger = class {
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.appendFile(fn, data + "\n", (err) => {
       if (err) {
-        console.error("logger writeFile", err);
+        this.console.error("logger writeFile", err);
       }
     });
   }

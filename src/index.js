@@ -103,7 +103,7 @@ class Logger {
   writeFile(fn, data) {
     const dir = fn.split("/").slice(0, -1).join('/')
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
-    fs.appendFile(fn, data + '\n', (err) => { if (err) { console.error('logger writeFile', err) } })
+    fs.appendFile(fn, data + '\n', (err) => { if (err) { this.console.error('logger writeFile', err) } })
   }
 
   static get levels() {

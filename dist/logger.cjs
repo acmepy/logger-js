@@ -120,7 +120,7 @@ var Logger = class {
     if (!import_fs.default.existsSync(dir)) import_fs.default.mkdirSync(dir, { recursive: true });
     import_fs.default.appendFile(fn, data + "\n", (err) => {
       if (err) {
-        console.error("logger writeFile", err);
+        this.console.error("logger writeFile", err);
       }
     });
   }
