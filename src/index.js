@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 const path = 'lib/logger'
 
 export const LEVELS = { TRACE: 1, DEBUG: 2, INFO: 3, WARN: 4, ERROR: 5, OFF: 99 }//ALL < |TRACE < DEBUG < INFO < WARN < ERROR| < FATAL < MARK < OFF
+export const ROTATE = { HOURLY: 'hourly', DAILY: 'daily', WEEKLY: 'weekly', MONTHLY: 'monthly' }
 
 class Logger {
   break = []
@@ -13,7 +14,7 @@ class Logger {
   name = false
   hideSecrets = false
 
-  config({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE, hideSecrets = true, breaks = [] }) {
+  config({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE, hideSecrets = true, rotate = 'daily', breaks = [] }) {
     this.file = file
     this.name = name
     this.console = {
@@ -25,6 +26,7 @@ class Logger {
     this.level = level
     this.hideSecrets = hideSecrets
     this.break = breaks
+    this.rotate = rotate
     //name = this
   }
 
@@ -103,6 +105,16 @@ class Logger {
   writeFile(fn, data) {
     const dir = fn.split("/").slice(0, -1).join('/')
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+    if (this.rotate) {
+      let date
+      switch (this.rotate) {
+        case ROTATE.HOURLY: date = dayjs().format('YYYY-MM-DD HH'); break;
+        case ROTATE.DAILY: date = dayjs().format('YYYY-MM-DD'); break;
+        case ROTATE.WEEKLY: date = dayjs().format('YYYY-MM-DD'); break;
+        case ROTATE.MONTHLY: date = dayjs().format('YYYY-MM-DD'); break;
+      }
+      fn = fn.replace('.log', `-${date}.log`)
+    }
     fs.appendFile(fn, data + '\n', (err) => { if (err) { this.console.error('logger writeFile', err) } })
   }
 
