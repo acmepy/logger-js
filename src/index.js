@@ -1,5 +1,6 @@
 import fs from 'fs'
 import dayjs from 'dayjs'
+import isoWeek from 'dayjs/plugin/isoWeek'
 
 const path = 'lib/logger'
 
@@ -108,10 +109,20 @@ class Logger {
     if (this.rotate) {
       let date
       switch (this.rotate) {
-        case ROTATE.HOURLY: date = dayjs().format('YYYY-MM-DD HH'); break;
-        case ROTATE.DAILY: date = dayjs().format('YYYY-MM-DD'); break;
-        case ROTATE.WEEKLY: date = dayjs().format('YYYY-MM-DD'); break;
-        case ROTATE.MONTHLY: date = dayjs().format('YYYY-MM-DD'); break;
+        case ROTATE.HOURLY:
+          date = dayjs().format('YYYY-MM-DD HH');
+          break;
+        case ROTATE.DAILY:
+          date = dayjs().format('YYYY-MM-DD');
+          break;
+        case ROTATE.WEEKLY:
+          dayjs.extend(isoWeek);
+          const week = dayjs().isoWeek();
+          date = dayjs().format('YYYY-') + week;
+          break;
+        case ROTATE.MONTHLY:
+          date = dayjs().format('YYYY-MM');
+          break;
       }
       fn = fn.replace('.log', `-${date}.log`)
     }
