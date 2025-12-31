@@ -151,6 +151,7 @@ class Logger {
         rest[r] = rest[r].join(',')
       }
     }
+
     return rest
   }
 }
