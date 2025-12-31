@@ -30,6 +30,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var index_exports = {};
 __export(index_exports, {
   LEVELS: () => LEVELS,
+  ROTATE: () => ROTATE,
   createLogger: () => createLogger,
   logger: () => logger
 });
@@ -38,6 +39,7 @@ var import_fs = __toESM(require("fs"), 1);
 var import_dayjs = __toESM(require("dayjs"), 1);
 var path = "lib/logger";
 var LEVELS = { TRACE: 1, DEBUG: 2, INFO: 3, WARN: 4, ERROR: 5, OFF: 99 };
+var ROTATE = { HOURLY: "hourly", DAILY: "daily", WEEKLY: "weekly", MONTHLY: "monthly" };
 var Logger = class {
   break = [];
   level = 0;
@@ -45,7 +47,7 @@ var Logger = class {
   file = false;
   name = false;
   hideSecrets = false;
-  config({ file, name = "my logger", displayConsole = false, level = LEVELS.TRACE, hideSecrets = true, breaks = [] }) {
+  config({ file, name = "my logger", displayConsole = false, level = LEVELS.TRACE, hideSecrets = true, rotate = "daily", breaks = [] }) {
     this.file = file;
     this.name = name;
     this.console = {
@@ -57,6 +59,7 @@ var Logger = class {
     this.level = level;
     this.hideSecrets = hideSecrets;
     this.break = breaks;
+    this.rotate = rotate;
   }
   addBreak(break_) {
     this.break.push(break_);
@@ -118,6 +121,24 @@ var Logger = class {
   writeFile(fn, data) {
     const dir = fn.split("/").slice(0, -1).join("/");
     if (!import_fs.default.existsSync(dir)) import_fs.default.mkdirSync(dir, { recursive: true });
+    if (this.rotate) {
+      let date;
+      switch (this.rotate) {
+        case ROTATE.HOURLY:
+          date = (0, import_dayjs.default)().format("YYYY-MM-DD HH");
+          break;
+        case ROTATE.DAILY:
+          date = (0, import_dayjs.default)().format("YYYY-MM-DD");
+          break;
+        case ROTATE.WEEKLY:
+          date = (0, import_dayjs.default)().format("YYYY-MM-DD");
+          break;
+        case ROTATE.MONTHLY:
+          date = (0, import_dayjs.default)().format("YYYY-MM-DD");
+          break;
+      }
+      fn = fn.replace(".log", `-${date}.log`);
+    }
     import_fs.default.appendFile(fn, data + "\n", (err) => {
       if (err) {
         this.console.error("logger writeFile", err);
@@ -186,6 +207,7 @@ var logger = new Logger();
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   LEVELS,
+  ROTATE,
   createLogger,
   logger
 });
