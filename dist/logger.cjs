@@ -200,8 +200,8 @@ stack:` + ((_j = rest[r]) == null ? void 0 : _j.stack);
     return rest;
   }
 };
-function createLogger({ file, name = "my logger", displayConsole = false, level = LEVELS.TRACE, breaks = [] }) {
-  logger.config({ file, name, displayConsole, level, breaks });
+function createLogger({ file, name = "my logger", displayConsole = false, level = LEVELS.TRACE, rotate = "daily", breaks = [] }) {
+  logger.config({ file, name, displayConsole, level, rotate, breaks });
 }
 var logger = new Logger();
 // Annotate the CommonJS export names for ESM import in node:
