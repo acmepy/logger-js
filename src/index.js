@@ -138,7 +138,7 @@ class Logger {
     for (let r = 0; r < rest.length; r++) {
       if (rest[r]?.constructor?.name == 'Logger') {
         rest.splice(r, 1)
-      } else if (rest[r].logger) {
+      } else if (rest[r]?.logger) {
         delete rest[r].logger
       } else if (rest[r].cert) {
         rest[r].cert = rest[r].cert.substring(0, 10) + '...' + rest[r].cert.substring(rest[r].cert.length - 10)

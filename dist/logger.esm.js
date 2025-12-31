@@ -116,11 +116,11 @@ var Logger = class {
       return tmp
     }*/
   filterLogger(rest) {
-    var _a, _b;
+    var _a, _b, _c;
     for (let r = 0; r < rest.length; r++) {
       if (((_b = (_a = rest[r]) == null ? void 0 : _a.constructor) == null ? void 0 : _b.name) == "Logger") {
         rest.splice(r, 1);
-      } else if (rest[r].logger) {
+      } else if ((_c = rest[r]) == null ? void 0 : _c.logger) {
         delete rest[r].logger;
       } else if (rest[r].cert) {
         rest[r].cert = rest[r].cert.substring(0, 10) + "..." + rest[r].cert.substring(rest[r].cert.length - 10);
