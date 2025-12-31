@@ -1,7 +1,7 @@
 // src/index.js
 import fs from "fs";
 import dayjs from "dayjs";
-import isoWeek from "dayjs/plugin/isoWeek";
+import isoWeek from "dayjs/plugin/isoWeek.js";
 var path = "lib/logger";
 var LEVELS = { TRACE: 1, DEBUG: 2, INFO: 3, WARN: 4, ERROR: 5, OFF: 99 };
 var ROTATE = { HOURLY: "hourly", DAILY: "daily", WEEKLY: "weekly", MONTHLY: "monthly" };

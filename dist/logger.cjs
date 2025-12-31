@@ -37,7 +37,7 @@ __export(index_exports, {
 module.exports = __toCommonJS(index_exports);
 var import_fs = __toESM(require("fs"), 1);
 var import_dayjs = __toESM(require("dayjs"), 1);
-var import_isoWeek = __toESM(require("dayjs/plugin/isoWeek"), 1);
+var import_isoWeek = __toESM(require("dayjs/plugin/isoWeek.js"), 1);
 var path = "lib/logger";
 var LEVELS = { TRACE: 1, DEBUG: 2, INFO: 3, WARN: 4, ERROR: 5, OFF: 99 };
 var ROTATE = { HOURLY: "hourly", DAILY: "daily", WEEKLY: "weekly", MONTHLY: "monthly" };
