@@ -140,18 +140,18 @@ class Logger {
         rest.splice(r, 1)
       } else if (rest[r]?.logger) {
         delete rest[r].logger
-      } else if (rest[r].cert) {
+      } else if (rest[r]?.cert) {
         rest[r].cert = rest[r].cert.substring(0, 10) + '...' + rest[r].cert.substring(rest[r].cert.length - 10)
-      } else if (rest[r].password) {
+      } else if (rest[r]?.password) {
         rest[r].password = rest[r].password.replace(rest[r].password, '*')
-      } else if (rest[r].pass && !this.hideSecrets) {
+      } else if (rest[r]?.pass && !this.hideSecrets) {
         rest[r].pass = rest[r].pass.replace(rest[r].pass, '*')
-      } else if (rest[r].clave && !this.hideSecrets) {
+      } else if (rest[r]?.clave && !this.hideSecrets) {
         rest[r].clave = rest[r].clave.replace(rest[r].clave, '*')
-      } else if (rest[r].token && !this.hideSecrets) {
+      } else if (rest[r]?.token && !this.hideSecrets) {
         rest[r].token = rest[r].token.replace(rest[r].token, '*')
       } else if (rest[r] instanceof Error) {
-        rest[r] = rest[r].message + `\nstack:` + rest[r].stack
+        rest[r] = rest[r]?.message + `\nstack:` + rest[r]?.stack
       } else if (typeof rest[r] == 'object') {
         rest[r] = JSON.stringify(rest[r])
       } else if (Array.isArray(rest[r])) {

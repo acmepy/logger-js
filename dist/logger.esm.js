@@ -116,25 +116,25 @@ var Logger = class {
       return tmp
     }*/
   filterLogger(rest) {
-    var _a, _b, _c;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
     for (let r = 0; r < rest.length; r++) {
       if (((_b = (_a = rest[r]) == null ? void 0 : _a.constructor) == null ? void 0 : _b.name) == "Logger") {
         rest.splice(r, 1);
       } else if ((_c = rest[r]) == null ? void 0 : _c.logger) {
         delete rest[r].logger;
-      } else if (rest[r].cert) {
+      } else if ((_d = rest[r]) == null ? void 0 : _d.cert) {
         rest[r].cert = rest[r].cert.substring(0, 10) + "..." + rest[r].cert.substring(rest[r].cert.length - 10);
-      } else if (rest[r].password) {
+      } else if ((_e = rest[r]) == null ? void 0 : _e.password) {
         rest[r].password = rest[r].password.replace(rest[r].password, "*");
-      } else if (rest[r].pass && !this.hideSecrets) {
+      } else if (((_f = rest[r]) == null ? void 0 : _f.pass) && !this.hideSecrets) {
         rest[r].pass = rest[r].pass.replace(rest[r].pass, "*");
-      } else if (rest[r].clave && !this.hideSecrets) {
+      } else if (((_g = rest[r]) == null ? void 0 : _g.clave) && !this.hideSecrets) {
         rest[r].clave = rest[r].clave.replace(rest[r].clave, "*");
-      } else if (rest[r].token && !this.hideSecrets) {
+      } else if (((_h = rest[r]) == null ? void 0 : _h.token) && !this.hideSecrets) {
         rest[r].token = rest[r].token.replace(rest[r].token, "*");
       } else if (rest[r] instanceof Error) {
-        rest[r] = rest[r].message + `
-stack:` + rest[r].stack;
+        rest[r] = ((_i = rest[r]) == null ? void 0 : _i.message) + `
+stack:` + ((_j = rest[r]) == null ? void 0 : _j.stack);
       } else if (typeof rest[r] == "object") {
         rest[r] = JSON.stringify(rest[r]);
       } else if (Array.isArray(rest[r])) {
