@@ -133,7 +133,7 @@ var Logger = class {
           break;
         case ROTATE.WEEKLY:
           import_dayjs.default.extend(import_isoWeek.default);
-          const week = (0, import_dayjs.default)().isoWeek();
+          const week = (0, import_dayjs.default)().isoWeekYear();
           date = (0, import_dayjs.default)().format("YYYY-") + week;
           break;
         case ROTATE.MONTHLY:
