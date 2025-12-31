@@ -58,8 +58,12 @@ var Logger = class {
     const level = rest.shift();
     const path2 = rest.shift();
     if (this.break.length == 0 && this.level <= LEVELS[level] || this.break.includes(path2) || ["ERROR", "FATAL"].includes(level)) {
-      const name = this.name ? this.name.indexOf("]") > -1 ? this.name : "[" + this.name + "]" : "";
-      let tmp = ["[" + dayjs().format("HH:mm:ss") + "]", "[" + level + "]", name, "[" + path2 + "]", ...rest];
+      let tmp = [];
+      if (this.name) {
+        tmp = ["[" + dayjs().format("HH:mm:ss") + "]", "[" + level + "]", this.name, "[" + path2 + "]", ...rest];
+      } else {
+        tmp = ["[" + dayjs().format("HH:mm:ss") + "]", "[" + level + "]", "[" + path2 + "]", ...rest];
+      }
       if (this.console.display || ["ERROR", "FATAL"].includes(level)) {
         if (["ERROR", "FATAL"].includes(level)) {
           this.console.error(...tmp);
