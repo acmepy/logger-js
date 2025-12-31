@@ -51,6 +51,7 @@ var Logger = class {
     this.console = {
       display: displayConsole,
       log: console.log,
+      warn: console.warn,
       error: console.error
     };
     this.level = level;

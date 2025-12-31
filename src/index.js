@@ -19,7 +19,8 @@ class Logger {
     this.console = {
       display: displayConsole,
       log: console.log,
-      error: console.error
+      warn: console.warn,
+      error: console.error,
     }
     this.level = level
     this.hideSecrets = hideSecrets
