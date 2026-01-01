@@ -17,7 +17,8 @@
     "build": "node build.js",
     "build-prod": "set NODE_ENV=production && node build.js",
     "prerelease": "npm run build-prod && git add . && git commit -m 'preparando-release' && git push",
-    "release": "npm version patch && git push && git push --tags"
+    "release": "npm version patch && git push && git push --tags",
+    "clean-tags": "node scripts/clean-tags.js"
   },
   "scriptsxx": {
     "build": "microbundle build --name logger"
