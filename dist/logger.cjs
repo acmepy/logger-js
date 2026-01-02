@@ -137,7 +137,7 @@ var Logger = class {
       }
       fn = fn.replace(".log", `-${date}.log`);
     }
-    import_fs.default.appendFile(fn, data + "\n", (err) => {
+    import_fs.default.appendFile(fn, data.join(" ") + "\n", (err) => {
       if (err) {
         this.console.error("logger writeFile", err);
       }
