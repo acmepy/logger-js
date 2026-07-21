@@ -1,6 +1,6 @@
 import fs from 'fs'
 import dayjs from 'dayjs'
-//import isoWeek from 'dayjs/plugin/isoWeek.js'
+////import isoWeek from 'dayjs/plugin/isoWeek.js'
 
 const path = 'lib/logger'
 
@@ -127,7 +127,7 @@ class Logger {
       }
       fn = fn.replace('.log', `-${date}.log`)
     }
-    fs.appendFile(fn, data + '\n', (err) => { if (err) { this.console.error('logger writeFile', err) } })
+    fs.appendFile(fn, data.join(' ') + '\n', (err) => { if (err) { this.console.error('logger writeFile', err) } })
   }
 
   static get levels() {

@@ -101,7 +101,7 @@ var Logger = class {
       }
       fn = fn.replace(".log", `-${date}.log`);
     }
-    fs.appendFile(fn, data + "\n", (err) => {
+    fs.appendFile(fn, data.join(" ") + "\n", (err) => {
       if (err) {
         this.console.error("logger writeFile", err);
       }
