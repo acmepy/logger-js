@@ -4,6 +4,10 @@ import dayjs from "dayjs";
 var path = "lib/logger";
 var LEVELS = { TRACE: 1, DEBUG: 2, INFO: 3, WARN: 4, ERROR: 5, OFF: 99 };
 var ROTATE = { HOURLY: "hourly", DAILY: "daily", WEEKLY: "weekly", MONTHLY: "monthly" };
+function bracket(value) {
+  const text = String(value);
+  return text.startsWith("[") && text.endsWith("]") ? text : "[" + text + "]";
+}
 var Logger = class {
   break = [];
   level = 0;
@@ -61,10 +65,11 @@ var Logger = class {
     const path2 = rest.shift();
     if (this.break.length == 0 && this.level <= LEVELS[level] || this.break.includes(path2) || ["ERROR", "FATAL"].includes(level)) {
       let tmp = [];
+      const logPath = bracket(path2);
       if (this.name) {
-        tmp = ["[" + dayjs().format("HH:mm:ss") + "]", "[" + level + "]", this.name, "[" + path2 + "]", ...rest];
+        tmp = ["[" + dayjs().format("HH:mm:ss") + "]", "[" + level + "]", bracket(this.name), logPath, ...rest];
       } else {
-        tmp = ["[" + dayjs().format("HH:mm:ss") + "]", "[" + level + "]", "[" + path2 + "]", ...rest];
+        tmp = ["[" + dayjs().format("HH:mm:ss") + "]", "[" + level + "]", logPath, ...rest];
       }
       if (this.console.display || ["ERROR", "FATAL"].includes(level)) {
         if (["ERROR", "FATAL"].includes(level)) {
