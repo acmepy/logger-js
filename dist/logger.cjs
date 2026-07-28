@@ -44,6 +44,9 @@ function bracket(value) {
   const text = String(value);
   return text.startsWith("[") && text.endsWith("]") ? text : "[" + text + "]";
 }
+function cleanLogText(value) {
+  return String(value).replaceAll("\\", "");
+}
 var Logger = class {
   break = [];
   level = 0;
@@ -102,6 +105,7 @@ var Logger = class {
     if (this.break.length == 0 && this.level <= LEVELS[level] || this.break.includes(path2) || ["ERROR", "FATAL"].includes(level)) {
       let tmp = [];
       const logPath = bracket(path2);
+      rest = rest.map((value) => typeof value == "string" ? cleanLogText(value) : value);
       if (this.name) {
         tmp = ["[" + (0, import_dayjs.default)().format("HH:mm:ss") + "]", "[" + level + "]", bracket(this.name), logPath, ...rest];
       } else {
@@ -192,12 +196,12 @@ var Logger = class {
       } else if (((_h = rest[r]) == null ? void 0 : _h.token) && !this.hideSecrets) {
         rest[r].token = rest[r].token.replace(rest[r].token, "*");
       } else if (rest[r] instanceof Error) {
-        rest[r] = ((_i = rest[r]) == null ? void 0 : _i.message) + `
-stack:` + ((_j = rest[r]) == null ? void 0 : _j.stack);
+        rest[r] = cleanLogText(((_i = rest[r]) == null ? void 0 : _i.message) + `
+stack:` + ((_j = rest[r]) == null ? void 0 : _j.stack));
       } else if (typeof rest[r] == "object") {
-        rest[r] = JSON.stringify(rest[r]);
+        rest[r] = cleanLogText(JSON.stringify(rest[r]));
       } else if (Array.isArray(rest[r])) {
-        rest[r] = rest[r].join(",");
+        rest[r] = cleanLogText(rest[r].join(","));
       }
     }
     return rest;
