@@ -1,6 +1,6 @@
 {
   "name":  "logger-js",
-  "version":  "0.5.1",
+  "version":  "0.5.2",
   "description":  "Logger js vainilla",
   "type":  "module",
   "source":  "src/index.js",

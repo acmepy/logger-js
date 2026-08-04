@@ -13,6 +13,10 @@ function bracket(value) {
   return text.startsWith('[') && text.endsWith(']') ? text : '[' + text + ']'
 }
 
+function cleanLogText(value) {
+  return String(value).replaceAll('\\', '')
+}
+
 class Logger {
   break = []
   level = 0
@@ -86,6 +90,7 @@ class Logger {
       //let tmp = ['[' + dayjs().format('HH:mm:ss') + ']', '[' + level + ']', name, '[' + path + ']', ...rest]
       let tmp = [];
       const logPath = bracket(path);
+      rest = rest.map((value) => typeof value == 'string' ? cleanLogText(value) : value);
       if (this.name) {
         tmp = ['[' + dayjs().format('HH:mm:ss') + ']', '[' + level + ']', bracket(this.name), logPath, ...rest];
       } else {
@@ -186,11 +191,11 @@ class Logger {
       } else if (rest[r]?.token && !this.hideSecrets) {
         rest[r].token = rest[r].token.replace(rest[r].token, '*');
       } else if (rest[r] instanceof Error) {
-        rest[r] = rest[r]?.message + `\nstack:` + rest[r]?.stack;
+        rest[r] = cleanLogText(rest[r]?.message + `\nstack:` + rest[r]?.stack);
       } else if (typeof rest[r] == 'object') {
-        rest[r] = JSON.stringify(rest[r]);
+        rest[r] = cleanLogText(JSON.stringify(rest[r]));
       } else if (Array.isArray(rest[r])) {
-        rest[r] = rest[r].join(',');
+        rest[r] = cleanLogText(rest[r].join(','));
       }
     }
 
