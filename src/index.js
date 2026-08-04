@@ -1,4 +1,3 @@
-import fs from 'fs'
 import dayjs from 'dayjs'
 ////import isoWeek from 'dayjs/plugin/isoWeek.js'
 
@@ -108,22 +107,28 @@ class Logger {
     }
   }
 
-  writeFile(fn, data) {
+  async writeFile(fn, data) {
+    if (!globalThis.process?.versions?.node) {
+      this.console.warn('logger writeFile is only available in Node.js')
+      return
+    }
+
+    const fs = await import('node:fs')
     const dir = fn.split("/").slice(0, -1).join('/')
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+    if (dir && !fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
     if (this.rotate) {
       let date
       switch (this.rotate) {
         case ROTATE.MONTHLY:
-          date = dayjs().format('YYYY-MM');
-          break;
+          date = dayjs().format('YYYY-MM')
+          break
         case ROTATE.HOURLY:
-          date = dayjs().format('YYYY-MM-DD HH');
-          break;
+          date = dayjs().format('YYYY-MM-DD HH')
+          break
         case ROTATE.DAILY:
         default:
-          date = dayjs().format('YYYY-MM-DD');
-          break;
+          date = dayjs().format('YYYY-MM-DD')
+          break
         //case ROTATE.WEEKLY: <--se requien mucho plugins
         //  dayjs.extend(isoWeek);
         //  const week = dayjs().isoWeek();
@@ -134,7 +139,6 @@ class Logger {
     }
     fs.appendFile(fn, data.join(' ') + '\n', (err) => { if (err) { this.console.error('logger writeFile', err) } })
   }
-
   static get levels() {
     return LEVELS
   }
@@ -196,3 +200,4 @@ export function createLogger({ file, name = 'my logger', displayConsole = false,
   logger.config({ file, name, displayConsole, level, rotate, breaks })
 }
 export const logger = new Logger()
+

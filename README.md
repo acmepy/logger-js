@@ -1,6 +1,8 @@
 # Logger JS
 
-Logger simple para Node.js con salida a consola, escritura opcional a archivo, niveles de severidad y rotacion de logs por fecha.
+Logger simple para JavaScript con salida a consola, escritura opcional a archivo en Node.js, niveles de severidad y rotacion de logs por fecha.
+
+Funciona en Node.js 22 y en navegador. En navegador se puede usar la salida a consola; la escritura a archivo solo esta disponible en Node.js.
 
 ## Instalacion
 
@@ -13,7 +15,7 @@ Tambien se puede declarar directo en `package.json`:
 ```json
 {
   "dependencies": {
-    "logger": "github:acmepy/logger-js"
+    "logger-js": "github:acmepy/logger-js"
   }
 }
 ```
@@ -21,7 +23,7 @@ Tambien se puede declarar directo en `package.json`:
 ## Uso Basico
 
 ```js
-import { createLogger, logger, LEVELS } from 'com.acmepy.logger-js'
+import { createLogger, logger, LEVELS } from 'logger-js'
 
 createLogger({
   name: '[api]',
@@ -51,6 +53,8 @@ La salida incluye hora, nivel, nombre del logger y origen:
 `createLogger` configura el singleton exportado como `logger`.
 
 ```js
+import { createLogger, LEVELS, ROTATE } from 'logger-js'
+
 createLogger({
   file: 'logs/app.log',
   name: '[worker]',
@@ -65,17 +69,18 @@ Opciones disponibles:
 
 | Opcion | Default | Descripcion |
 | --- | --- | --- |
-| `file` | `undefined` | Ruta base del archivo de log. Si se define, el logger crea el directorio cuando hace falta. |
+| `file` | `undefined` | Ruta base del archivo de log. Solo funciona en Node.js. Si se define, el logger crea el directorio cuando hace falta. |
 | `name` | `'my logger'` | Nombre que se imprime junto al nivel. Puede ser `false` si no se quiere mostrar. |
 | `displayConsole` | `false` | Muestra logs en consola. Los errores siempre salen por consola. |
 | `level` | `LEVELS.TRACE` | Nivel minimo que se registra cuando no hay `breaks`. |
-| `rotate` | `'daily'` | Agrega fecha al nombre del archivo segun la rotacion. |
+| `hideSecrets` | `true` | Controla el filtrado de algunos campos sensibles. |
+| `rotate` | `'daily'` | Agrega fecha al nombre del archivo segun la rotacion. Puede ser `false` para desactivar rotacion. |
 | `breaks` | `[]` | Lista de origenes que se registran aunque no cumplan el nivel minimo. |
 
 ## Niveles
 
 ```js
-import { LEVELS } from 'com.acmepy.logger-js'
+import { LEVELS } from 'logger-js'
 
 LEVELS.TRACE
 LEVELS.DEBUG
@@ -100,7 +105,7 @@ logger.error(path, ...data)
 ## Rotacion de Archivos
 
 ```js
-import { createLogger, logger, ROTATE } from 'com.acmepy.logger-js'
+import { createLogger, logger, ROTATE } from 'logger-js'
 
 createLogger({
   file: 'logs/app.log',
@@ -150,6 +155,47 @@ Antes de imprimir, el logger normaliza algunos valores:
 - Si recibe un objeto con `cert`, muestra solo el inicio y el final del certificado.
 - Si recibe un objeto con `password`, reemplaza el valor por `*`.
 
+## Browser
+
+El build para navegador esta disponible en `dist/logger.umd.js` y expone `logger` en `globalThis`:
+
+```html
+<script src="dist/logger.umd.js"></script>
+<script>
+  logger.createLogger({ displayConsole: true })
+  logger.logger.info('browser/app', 'listo')
+</script>
+```
+
+La opcion `file` no escribe archivos en navegador; si se configura, el logger muestra un aviso por consola y continua.
+
+## TypeScript
+
+El paquete incluye declaraciones en `src/index.d.ts` y las expone mediante `types` y `exports.types`.
+
+```ts
+import { createLogger, logger, type LoggerConfig } from 'logger-js'
+
+const config: LoggerConfig = {
+  displayConsole: true
+}
+
+createLogger(config)
+logger.info('app/start', 'ok')
+```
+
+## Build
+
+Rollup genera un archivo por formato:
+
+| Formato | Archivo |
+| --- | --- |
+| ESM | `dist/logger.esm.js` |
+| CommonJS | `dist/logger.cjs` |
+| Browser UMD/IIFE | `dist/logger.umd.js` |
+
+`dayjs` queda externo en ESM/CJS por ser `peerDependency`, y empaquetado dentro del build de navegador para que sea un solo archivo usable en browser.
+
 ## Ejemplos
 
 Hay ejemplos ejecutables en `example/`:
@@ -172,9 +218,9 @@ Scripts principales:
 
 | Script | Descripcion |
 | --- | --- |
-| `npm test` | Ejecuta Jest. |
-| `npm run build` | Compila `src/index.js` en `dist/logger.cjs` y `dist/logger.esm.js`. |
-| `npm run build-prod` | Compila con `NODE_ENV=production`. |
+| `npm test` | Ejecuta el test runner nativo de Node.js. |
+| `npm run build` | Compila con Rollup en ESM, CommonJS y UMD para navegador. |
+| `npm run build-prod` | Compila con Rollup en modo production. |
 | `npm run release` | Incrementa version, pushea commits y tags. |
 
 ## Licencia
