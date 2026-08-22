@@ -119,8 +119,9 @@ class Logger {
     }
 
     const fs = await import('node:fs')
-    const dir = fn.split("/").slice(0, -1).join('/')
-    if (dir && !fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+    const { dirname } = await import('node:path')
+    const dir = dirname(fn)
+    if (dir !== '.' && !fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
     if (this.rotate) {
       let date
       switch (this.rotate) {
@@ -142,7 +143,11 @@ class Logger {
       }
       fn = fn.replace('.log', `-${date}.log`)
     }
-    fs.appendFile(fn, data.join(' ') + '\n', (err) => { if (err) { this.console.error('logger writeFile', err) } })
+    try {
+      await fs.promises.appendFile(fn, data.join(' ') + '\n')
+    } catch (err) {
+      this.console.error('logger writeFile', err)
+    }
   }
   static get levels() {
     return LEVELS

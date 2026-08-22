@@ -157,13 +157,17 @@ Antes de imprimir, el logger normaliza algunos valores:
 
 ## Browser
 
-El build para navegador esta disponible en `dist/logger.umd.js` y expone `logger` en `globalThis`:
+Los navegadores modernos pueden importar el único bundle ESM con un script de tipo módulo. Como `dayjs` es una `peerDependency`, se debe resolver mediante un import map o el gestor de paquetes de la aplicación:
 
 ```html
-<script src="dist/logger.umd.js"></script>
-<script>
-  logger.createLogger({ displayConsole: true })
-  logger.logger.info('browser/app', 'listo')
+<script type="importmap">
+  { "imports": { "dayjs": "https://esm.sh/dayjs@1.11.0" } }
+</script>
+<script type="module">
+  import { createLogger, logger } from './dist/logger.esm.js'
+
+  createLogger({ displayConsole: true })
+  logger.info('browser/app', 'listo')
 </script>
 ```
 
@@ -191,10 +195,8 @@ Rollup genera un archivo por formato:
 | Formato | Archivo |
 | --- | --- |
 | ESM | `dist/logger.esm.js` |
-| CommonJS | `dist/logger.cjs` |
-| Browser UMD/IIFE | `dist/logger.umd.js` |
 
-`dayjs` queda externo en ESM/CJS por ser `peerDependency`, y empaquetado dentro del build de navegador para que sea un solo archivo usable en browser.
+`dayjs` queda externo por ser una `peerDependency`.
 
 ## Ejemplos
 
@@ -219,7 +221,7 @@ Scripts principales:
 | Script | Descripcion |
 | --- | --- |
 | `npm test` | Ejecuta el test runner nativo de Node.js. |
-| `npm run build` | Compila con Rollup en ESM, CommonJS y UMD para navegador. |
+| `npm run build` | Compila el bundle ESM con Rollup. |
 | `npm run build-prod` | Compila con Rollup en modo production. |
 | `npm run release` | Incrementa version, pushea commits y tags. |
 

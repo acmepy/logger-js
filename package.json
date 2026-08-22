@@ -1,16 +1,14 @@
 {
   "name":  "logger-js",
-  "version":  "0.5.2",
+  "version":  "0.5.3",
   "description":  "Logger js vainilla",
   "type":  "module",
   "source":  "src/index.js",
-  "main":  "dist/logger.cjs",
-  "module":  "dist/logger.esm.js",
-  "unpkg":  "dist/logger.umd.js",
+  "main":  "dist/logger.esm.js",
   "exports":  {
     "types":  "./src/index.d.ts",
-    "require":  "./dist/logger.cjs",
-    "import":  "./dist/logger.esm.js"
+    "import":  "./dist/logger.esm.js",
+    "default":  "./dist/logger.esm.js"
   },
   "scripts":  {
     "test":  "node --test",
@@ -43,8 +41,6 @@
   },
   "homepage":  "https://github.com/acmepy/logger-js#readme",
   "devDependencies":  {
-    "@rollup/plugin-commonjs":  "^29.0.3",
-    "@rollup/plugin-node-resolve":  "^16.0.3",
     "rollup":  "4.59.0"
   },
   "types":  "src/index.d.ts"
