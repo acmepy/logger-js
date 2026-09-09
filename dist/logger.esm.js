@@ -25,7 +25,7 @@ class Logger {
   name = false
   hideSecrets = false
 
-  config({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE, hideSecrets = true, rotate = 'daily', breaks = [] }) {
+  config({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE, hideSecrets = true, rotate = 'daily', maxFiles = 10, breaks = [] }) {
     this.file = file;
     this.name = name;
     this.console = {
@@ -38,6 +38,7 @@ class Logger {
     this.hideSecrets = hideSecrets;
     this.break = breaks;
     this.rotate = rotate;
+    this.maxFiles = maxFiles;
     //name = this
   }
 
@@ -121,7 +122,8 @@ class Logger {
     }
 
     const fs = await import('node:fs');
-    const { dirname } = await import('node:path');
+    const { basename, dirname, extname } = await import('node:path');
+    const baseFile = fn;
     const dir = dirname(fn);
     if (dir !== '.' && !fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     if (this.rotate) {
@@ -147,9 +149,28 @@ class Logger {
     }
     try {
       await fs.promises.appendFile(fn, data.join(' ') + '\n');
+      if (this.rotate && this.maxFiles !== false) {
+        await this.removeOldFiles(dirname(baseFile), basename(baseFile), extname(baseFile));
+      }
     } catch (err) {
       this.console.error('logger writeFile', err);
     }
+  }
+
+  async removeOldFiles(dir, filename, extension) {
+    const maxFiles = Number(this.maxFiles);
+    if (!Number.isInteger(maxFiles) || maxFiles < 1) return
+
+    const fs = await import('node:fs');
+    const { join } = await import('node:path');
+    const suffix = extension || '.log';
+    const prefix = filename.slice(0, -suffix.length) + '-';
+    const files = (await fs.promises.readdir(dir, { withFileTypes: true }))
+      .filter((entry) => entry.isFile() && entry.name.startsWith(prefix) && entry.name.endsWith(suffix))
+      .map((entry) => entry.name)
+      .sort();
+
+    await Promise.all(files.slice(0, -maxFiles).map((file) => fs.promises.unlink(join(dir, file))));
   }
   static get levels() {
     return LEVELS
@@ -208,8 +229,8 @@ class Logger {
   }
 }
 
-function createLogger({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE, rotate = 'daily', breaks = [] }) {
-  logger.config({ file, name, displayConsole, level, rotate, breaks });
+function createLogger({ file, name = 'my logger', displayConsole = false, level = LEVELS.TRACE, rotate = 'daily', maxFiles = 10, breaks = [] }) {
+  logger.config({ file, name, displayConsole, level, rotate, maxFiles, breaks });
 }
 const logger = new Logger();
 

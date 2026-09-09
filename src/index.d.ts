@@ -25,6 +25,8 @@ export interface LoggerConfig {
   level?: typeof LEVELS[keyof typeof LEVELS]
   hideSecrets?: boolean
   rotate?: RotateMode | false
+  /** Maximum number of rotated log files to retain. Use false to disable cleanup. */
+  maxFiles?: number | false
   breaks?: string[]
 }
 
@@ -43,6 +45,7 @@ export declare class Logger {
   name: string | false
   hideSecrets: boolean
   rotate?: RotateMode | false
+  maxFiles?: number | false
 
   config(options: LoggerConfig): void
   addBreak(break_: string): void

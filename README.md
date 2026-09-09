@@ -61,6 +61,7 @@ createLogger({
   displayConsole: true,
   level: LEVELS.DEBUG,
   rotate: ROTATE.DAILY,
+  maxFiles: 10,
   breaks: []
 })
 ```
@@ -75,6 +76,7 @@ Opciones disponibles:
 | `level` | `LEVELS.TRACE` | Nivel minimo que se registra cuando no hay `breaks`. |
 | `hideSecrets` | `true` | Controla el filtrado de algunos campos sensibles. |
 | `rotate` | `'daily'` | Agrega fecha al nombre del archivo segun la rotacion. Puede ser `false` para desactivar rotacion. |
+| `maxFiles` | `10` | Cantidad maxima de archivos rotados que se conservan. Usa `false` para no eliminar archivos antiguos. |
 | `breaks` | `[]` | Lista de origenes que se registran aunque no cumplan el nivel minimo. |
 
 ## Niveles
