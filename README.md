@@ -75,7 +75,7 @@ Opciones disponibles:
 | `displayConsole` | `false` | Muestra logs en consola. Los errores siempre salen por consola. |
 | `level` | `LEVELS.TRACE` | Nivel minimo que se registra cuando no hay `breaks`. |
 | `hideSecrets` | `true` | Controla el filtrado de algunos campos sensibles. |
-| `rotate` | `'daily'` | Agrega fecha al nombre del archivo segun la rotacion. Puede ser `false` para desactivar rotacion. |
+| `rotate` | `'daily'` | Agrega fecha al nombre: `hourly`, `daily`, `weekly` o `monthly`. `weekly` usa semanas ISO (lunes a domingo), con anio ISO y semana de dos digitos: `app-2026-46.log`. Puede ser `false` para desactivar rotacion. |
 | `maxFiles` | `10` | Cantidad maxima de archivos rotados que se conservan. Usa `false` para no eliminar archivos antiguos. |
 | `breaks` | `[]` | Lista de origenes que se registran aunque no cumplan el nivel minimo. |
 

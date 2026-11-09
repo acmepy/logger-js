@@ -40,3 +40,34 @@ test('writeFile retains the configured number of rotated files', async () => {
     await rm(root, { recursive: true, force: true })
   }
 })
+
+
+test('weekly rotation groups ISO weeks across year boundaries and retains files', async (t) => {
+  const root = await mkdtemp(join(tmpdir(), 'logger-js-'))
+  const file = join(root, 'app.log')
+  t.mock.timers.enable({ apis: ['Date'], now: new Date(2020, 11, 28, 12).getTime() })
+
+  try {
+    createLogger({ file, rotate: 'weekly', maxFiles: 2 })
+    await logger.writeFile(file, ['monday'])
+    t.mock.timers.setTime(new Date(2021, 0, 3, 12).getTime())
+    await logger.writeFile(file, ['sunday'])
+    assert.equal(await readFile(join(root, 'app-2020-53.log'), 'utf8'), 'monday\nsunday\n')
+    assert.deepEqual(await readdir(root), ['app-2020-53.log'])
+
+    t.mock.timers.setTime(new Date(2021, 0, 4, 12).getTime())
+    await logger.writeFile(file, ['next monday'])
+    assert.equal(await readFile(join(root, 'app-2021-01.log'), 'utf8'), 'next monday\n')
+
+    t.mock.timers.setTime(new Date(2021, 0, 11, 12).getTime())
+    await logger.writeFile(file, ['second week'])
+    assert.deepEqual((await readdir(root)).sort(), ['app-2021-01.log', 'app-2021-02.log'])
+
+    t.mock.timers.setTime(new Date(2024, 11, 30, 12).getTime())
+    await logger.writeFile(file, ['next ISO year'])
+    assert.equal(await readFile(join(root, 'app-2025-01.log'), 'utf8'), 'next ISO year\n')
+  } finally {
+    t.mock.timers.reset()
+    await rm(root, { recursive: true, force: true })
+  }
+})

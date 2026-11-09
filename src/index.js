@@ -1,5 +1,7 @@
 import dayjs from 'dayjs'
-////import isoWeek from 'dayjs/plugin/isoWeek.js'
+import isoWeek from 'dayjs/plugin/isoWeek.js'
+
+dayjs.extend(isoWeek)
 
 const path = 'lib/logger'
 
@@ -137,11 +139,11 @@ class Logger {
         default:
           date = dayjs().format('YYYY-MM-DD')
           break
-        //case ROTATE.WEEKLY: <--se requien mucho plugins
-        //  dayjs.extend(isoWeek);
-        //  const week = dayjs().isoWeek();
-        //  date = dayjs().format('YYYY-') + week;
-        //  break;
+        case ROTATE.WEEKLY: {
+          const now = dayjs()
+          date = `${now.isoWeekYear()}-${String(now.isoWeek()).padStart(2, '0')}`
+          break
+        }
       }
       fn = fn.replace('.log', `-${date}.log`)
     }

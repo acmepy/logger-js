@@ -5,7 +5,7 @@ const banner = '/* logger-js */'
 export default [
   {
     input: 'src/index.js',
-    external: ['dayjs', 'node:fs', 'node:path'],
+    external: ['dayjs', 'dayjs/plugin/isoWeek.js', 'node:fs', 'node:path'],
     output: {
       file: 'dist/logger.esm.js',
       format: 'esm',
