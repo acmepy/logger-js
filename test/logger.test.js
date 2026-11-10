@@ -6,6 +6,50 @@ import test from 'node:test'
 
 import { createLogger, logger } from '../src/index.js'
 
+for (const entry of ['../src/index.js', '../dist/logger.esm.js']) {
+  test(`${entry} preserves backslashes and JSON escapes in console and file output`, async (t) => {
+    const { createLogger, logger } = await import(entry)
+    const root = await mkdtemp(join(tmpdir(), 'logger-js-'))
+    const file = join(root, 'app.log')
+    const windowsPath = String.raw`C:\tmp\logs\app.log`
+    const payload = {
+      path: windowsPath,
+      message: 'quoted "value"\nnext line\tend',
+      backslash: '\\',
+      sqlDurationMs: 12.5,
+      nested: { json: JSON.stringify({ query: 'SELECT "name"\nFROM users' }) },
+    }
+    const serialized = JSON.stringify(payload)
+    const error = new Error(windowsPath)
+    error.stack = `Error: ${windowsPath}\n    at ${windowsPath}:1:1`
+    const errorText = error.message + '\nstack:' + error.stack
+    const writes = []
+    const writeFile = logger.writeFile.bind(logger)
+
+    try {
+      createLogger({ file, rotate: false, displayConsole: true })
+      const output = t.mock.method(logger.console, 'log', () => {})
+      t.mock.method(logger, 'writeFile', (...args) => {
+        const pending = writeFile(...args)
+        writes.push(pending)
+        return pending
+      })
+
+      logger.info('test', windowsPath, payload, serialized, error)
+      await Promise.all(writes)
+
+      const values = output.mock.calls[0].arguments.slice(4)
+      assert.deepEqual(values, [windowsPath, serialized, serialized, errorText])
+      assert.deepEqual(JSON.parse(values[1]), payload)
+      const content = await readFile(file, 'utf8')
+      assert.ok(content.endsWith(`${values.join(' ')}\n`))
+    } finally {
+      t.mock.restoreAll()
+      await rm(root, { recursive: true, force: true })
+    }
+  })
+}
+
 test('writeFile creates a missing directory using a Windows path', async () => {
   const root = await mkdtemp(join(tmpdir(), 'logger-js-'))
   const file = join(root, 'logs', 'app.log')

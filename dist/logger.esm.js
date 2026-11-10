@@ -15,7 +15,7 @@ function bracket(value) {
 }
 
 function cleanLogText(value) {
-  return String(value).replaceAll('\\', '')
+  return String(value)
 }
 
 class Logger {
